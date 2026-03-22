@@ -1,0 +1,31 @@
+URL API: LẤY IP MỚI
+https://fproxy.me/api/getnew?api_key=&location=&ip_allow=
+📋
+Tham số	Kiểu dữ liệu	Ví dụ	Chú thích
+api_key	string	ukhe73wa4j6....	Apikey của tài khoản
+location	int	0 hoặc 1 hặc 2	Không truyền để chọn ngẫu nhiên
+ip_allow	string	101.189.139.102	Không truyền sẽ tự động lấy
+Nếu không truyền location và ip_allow thì chỉ cần: https://fproxy.me/api/getnew?api_key= Trường hợp kết quả trả về "success": false, "message": "Vui lòng chờ 57 giây", "data": thì vẫn cần lấy data
+Response
+{
+  "success": true,
+  "data": {
+    "proxy": "113.168.70.47:59036",
+    "http": "113.168.70.47:59036",
+    "sock": "113.168.70.47:60105",
+    "httpuserpass": "113.168.70.47:56475:yug5oabh:wo9fjeycrc8c",
+    "sockuserpass": "113.168.70.47:45435:yug5oabh:wo9fjeycrc8c",
+    "user": "yug5oabh",
+    "pass": "wo9fjeycrc8c",
+    "ip_allow": "14.189.139.102",
+    "location": "Thanh Hoá",
+    "note": "2322",
+    "ip": "113.168.70.47",
+    "port": "59036",
+    "portsock": "60105",
+    "porthttpuserpass": "56475",
+    "portsockuserpass": "45435",
+    "time_die": "1800",
+    "waiting_time": "30"
+  }
+}

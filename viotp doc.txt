@@ -1,0 +1,334 @@
+Token
+0f8f8f4e8b1c4797a902950b187ac56e
+Last Updated 2.0: 10/03/2023 00:15:00
+- Thêm tính năng thuê SIM Lào
+Lưu ý !
+- Sử dụng giao thức GET cho mọi truy vấn.
+- Dữ liệu trả về dưới dạng JSON.
+- Số điện thoại chỉ bao gồm 9 chữ số, không có số 0 ở đầu.
+- Dịch vụ Zalo hiện tại không hỗ trợ thuê số qua API
+0. Tra cứu thông tin tài khoản
+0.1 Ví dụ gửi đi
+
+GET https://api.viotp.com/users/balance?token=5abec70115c70ebb685169fe7dd985e7
+Danh sách tham số gửi đi
+
+token : API token của bạn
+Dùng để định danh người gửi
+0.2 Kết quả trả về
+
+{"status_code":200,"success":true,"message":"successful","data":{"balance":9999999999}}
+Danh sách trả về
+
+status_code : Mã của kết quả
+200 : Thành công
+401 : Lỗi xác thực
+-1 : Có lỗi
+message : Thông tin thêm
+Thông tin báo thành công hoặc là nội dung của lỗi
+data : Thông tin số tiền trong tài khoản
+balance : Số tiền còn lại
+"status_code" : 200
+"success" : true
+"message" : "successful"
+"data"
+"balance" : 9999999999
+1. Lấy danh sách nhà mạng
+Mobi, Vina, Viettel, VNMB, ITELECOM - chỉ áp dụng cho thuê SIM Việt Nam
+UNITEL, ETL, BEELINE, LAOTEL - chỉ áp dụng cho thuê SIM Lào
+1.1 Ví dụ gửi đi
+
+GET https://api.viotp.com/networks/get?token=5abec70115c70ebb685169fe7dd985e7
+Danh sách tham số gửi đi
+
+token : API token của bạn
+Dùng để định danh người gửi
+1.2 Kết quả trả về
+
+{"status_code":200,"success":true,"message":"successful","data":[{"id":1,"name":"MOBIFONE"},{"id":2,"name":"VINAPHONE"},{"id":3,"name":"VIETTEL"},{"id":4,"name":"VIETNAMOBILE"}, {"id": 5, "name": "ITELECOM"}, {"id": 6, "name": "VODAFONE"}, {"id": 7, "name": "WINTEL"}, {"id": 8, "name": "METFONE"}, {"id": 9, "name": "UNITEL"}, {"id": 10, "name": "ETL"}, {"id": 11, "name": "BEELINE"}, {"id": 12, "name": "LAOTEL"}]}
+Danh sách trả về
+
+status_code : Mã của kết quả
+200 : Thành công
+401 : Lỗi xác thực
+-1 : Có lỗi
+message : Thông tin thêm
+Thông tin báo thành công hoặc là nội dung của lỗi
+data : Danh sách nhà mạng
+id : Id của nhà mạng
+name : Tên của nhà mạng
+"status_code" : 200
+"success" : true
+"message" : "successful"
+data
+"id" : 1
+"name" : "MOBIFONE"
+"id" : 2
+"name" : "VINAPHONE"
+"id" : 3
+"name" : "VIETTEL"
+"id" : 4
+"name" : "VIETNAMOBILE"
+"id" : 5
+"name" : "ITELECOM"
+"id" : 6
+"name" : "VODAFONE"
+"id" : 7
+"name" : "WINTEL"
+"id" : 8
+"name" : "METFONE"
+"id" : 9
+"name" : "UNITEL"
+"id" : 10
+"name" : "ETL"
+"id" : 11
+"name" : "BEELINE"
+"id" : 12
+"name" : "LAOTEL"
+2. Lấy danh sách dịch vụ
+2.1 Ví dụ gửi đi
+
+GET https://api.viotp.com/service/getv2?token=5abec70115c70ebb685169fe7dd985e7&country=vn
+Danh sách tham số gửi đi
+
+token : API token của bạn
+Dùng để định danh người gửi
+country : Mã quốc gia cần lấy danh sách dịch vụ hỗ trợ (mặc định không truyền parameter 'country' là lấy danh sách dịch vụ SIM Việt Nam)
+la: Lào
+vn: Việt Nam
+2.2 Kết quả trả về
+
+{"status_code":200,"success":true,"message":"successful","data":["id":1,"name":"Facebook","price":800},{"id":2,"name":"Shopee","price":600}]}
+Danh sách trả về
+
+status_code : Mã của kết quả
+200 : Thành công
+401 : Lỗi xác thực
+-1 : Có lỗi
+message : Thông tin thêm
+Thông tin báo thành công hoặc là nội dung của lỗi
+data : Danh sách dịch vụ
+id : Id của dịch vụ
+name : Tên của dịch vụ
+price : Giá thuê dịch vụ
+status_code : 200
+success : true
+message : "successful"
+data
+id : 7
+name : "Facebook"
+price : "800"
+id : 1
+name : "Momo"
+price : "350"
+3. Yêu cầu dịch vụ
+3.1 Ví dụ gửi đi
+
+THUÊ SIM VIỆT NAM
+Cơ bản
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1
+Tùy chọn nhà mạng
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1&network=MOBIFONE|VINAPHONE|VIETTEL|VIETNAMOBILE|ITELECOM|WINTEL
+Tùy chọn đầu số muốn lấy
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1&prefix=90|91|92|93
+Tùy chọn đầu số không muốn lấy
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1&exceptPrefix=94|96|97|98
+Tùy chọn thuê lại số cũ
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1&number=0987654321
+number: số điện thoại cần thuê lại (dùng giá trị trường re_phone_number trả về ở API 'Yêu cầu dịch vụ' hoặc PhoneOriginal trả về ở API 'Lịch sử thuê số')
+THUÊ SIM LÀO
+Cơ bản
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1&country=la
+Tùy chọn nhà mạng
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1&country=la&network=UNITEL|ETL|BEELINE|LAOTEL
+Tùy chọn thuê lại số cũ
+GET https://api.viotp.com/request/getv2?token=5abec70115c70ebb685169fe7dd985e7&serviceId=1&number=8562098765432
+number: số điện thoại cần thuê lại (dùng giá trị trường re_phone_number trả về ở API 'Yêu cầu dịch vụ' hoặc PhoneOriginal trả về ở API 'Lịch sử thuê số')
+Danh sách tham số gửi đi
+
+token : API token của bạn
+Dùng để định danh người gửi
+serviceId : Id của dịch vụ
+Lấy Id trong danh sách trả về ở mục 2
+network : Nhà mạng muốn lấy số
+Bao gồm các giá trị [MOBIFONE, VINAPHONE, VIETTEL ,VIETNAMOBILE, ITELECOM, WINTEL] => SIM VIỆT NAM; [UNITEL, ETL, BEELINE, LAOTEL] => LÀO
+Bỏ qua thông số này nếu muốn lấy tất cả nhà mạng, - Có thể yêu cầu nhiều nhà mạng cách nhau và kết thúc bằng dấu '|' vd network=VINAPHONE|VIETTEL|
+prefix : Đầu số muốn lấy số
+Bao gồm các giá trị đầu số của các nhà mạng
+Bỏ qua thông số này nếu muốn lấy tất cả đầu số, - Có thể yêu cầu nhiều đầu số cách nhau và kết thúc bằng dấu '|' vd prefix=96|97|98|
+exceptPrefix : Đầu số không muốn lấy số
+Bao gồm các giá trị đầu số của các nhà mạng
+Bỏ qua thông số này nếu không quan tâm đầu số không muốn lấy, - Có thể yêu cầu nhiều đầu số cách nhau và kết thúc bằng dấu '|' vd exceptPrefix=97|98|
+number : Số điện thoại muốn thuê lại (dùng giá trị trường re_phone_number trả về ở API 'Yêu cầu dịch vụ' hoặc PhoneOriginal trả về ở API 'Lịch sử thuê số')
+Dùng trong trường hợp ứng dụng yêu cầu xác thực nhiều lần
+3.2 Kết quả trả về
+
+{"status_code":200,"success":true,"message":"successful","data":{"phone_number":"987654321","balance":50000,"request_id":"122314","re_phone_number":"84987654321","countryISO":"VN","countryCode":"84"}}
+Danh sách trả về
+
+status_code : Mã của kết quả
+200 : Thành công
+401 : Lỗi xác thực
+429 : Limit exceeded, tối đa $ số chờ tin nhắn ($: giới hạn số chờ tin nhắn hiện tại)
+-1 : Có lỗi
+-2 : Số dư tài khoản không đủ
+-3 : Kho số đang tạm hết, vui lòng liên hệ hỗ trợ
+-4 : Ứng dụng không tồn tại hoặc đang tạm ngưng
+message : Thông tin thêm
+Thông tin báo thành công hoặc là nội dung của lỗi
+data : Thông tin sim số
+phone_number : Số điện thoại đã thuê được
+re_phone_number : Giá trị dùng để thuê lại của số điện thoại đã thuê được
+countryISO : Mã quốc gia của số điện thoại thuê được (Việt Nam: VN, Lào: LA)
+countryCode : Số mã vùng quốc gia của số điện thoại đã thuê được (ví dụ: Việt Nam - 84, Lào - 856)
+balance : Số dư hiện tại
+request_id : Mã để lấy Code trong mục 4
+"status_code" : 200
+"success" : true
+"message" : "Tạo yêu cầu thành công !"
+data
+"phone_number" : "987654321"
+"re_phone_number" : "84987654321"
+"countryISO" : "VN"
+"countryCode" : "84"
+"balance" : 50000
+"request_id" : "122314"
+4. Lấy code của 1 số điện thoại đã lấy
+4.1 Ví dụ gửi đi
+
+GET https://api.viotp.com/session/getv2?requestId=1234122&token=5abec70115c70ebb685169fe7dd985e7
+Danh sách tham số gửi đi
+
+token : API token của bạn
+Dùng để định danh người gửi
+requestId : Mã phiên thuê số cần lấy code
+Đã được lấy ở mục 3
+4.2 Kết quả trả về
+
+Nhận được tin nhắn
+{"status_code":200,"success":true,"message":"successful","data":{"ID":58098,"ServiceID":1,"ServiceName":"Momo","Status":1,"Price":600,"Phone":"987654321","SmsContent":"486460 la ma xac thuc OTP dang ky vi MoMo. De tranh bi mat tien, tuyet doi KHONG chia se ma nay voi bat ky ai. zniHFS3HBXG","IsSound":"false","CreatedTime":"2020-08-06T17:13:24.88","Code":"486460","PhoneOriginal":"0987654321","CountryISO":"VN","CountryCode":"84"}}
+Nhận được cuộc gọi
+{"status_code":200,"success":true,"message":"successful","data":{"ID":58060,"ServiceID":1,"ServiceName":"Momo","Status":1,"Price":600,"Phone":"987654321","SmsContent":"https://audio.viotp.com/1234500000123456789000006789.wav","IsSound":"true","CreatedTime":"2020-08-06T17:13:24.88","Code":"486460","PhoneOriginal":"0987654321","CountryISO":"VN","CountryCode":"84"}}
+Danh sách trả về
+
+status_code : Mã của kết quả
+200 : Thành công
+401 : Lỗi xác thực
+429 : Limit exceeded, tối đa $ số chờ tin nhắn ($: giới hạn số chờ tin nhắn hiện tại)
+-1 : Có lỗi
+-2 : Mã phiên không đúng
+message : Thông tin thêm
+Thông tin báo thành công hoặc là nội dung của lỗi
+data : Thông tin của tin nhắn/cuộc gọi nhận được
+ID : Mã để lấy code. Được lấy ở mục 3
+Phone : Số điện thoại đã thuê được
+ServiceID : Id của dịch vụ
+ServiceName : Tên của dịch vụ
+Status : Trạng thái của tin nhắn
+1 : Hoàn thành
+0 : Đợi tin nhắn
+2 : Hết hạn
+Price : Giá thuê dịch vụ
+CreatedTime : Thời gian tạo OTP
+IsSound : OTP là audio
+SmsContent : Nội dung tin nhắn (nếu IsSound=true, giá trị sẽ là đường dẫn của file audio otp)
+Code : Mã của OTP
+PhoneOriginal : Giá trị dùng để thuê lại số tại mục 3.Yêu cầu dịch vụ
+CountryISO : Mã quốc gia SIM thuê được
+CountryCode : Số mã vùng quốc gia SIM thuê được
+"status_code" : 200
+"success" : true
+"message" : "successful"
+"data" (Tin nhắn)
+"ID" : "58098"
+"Phone" : "987654321"
+"ServiceID" : 1
+"ServiceName" : "Momo"
+"Status" : 1
+"Price" : 350
+"CreatedTime" : "2020-08-06T17:13:24.88"
+"IsSound" : false
+"SmsContent" : "486460 la ma xac thuc OTP dang ky vi MoMo. De tranh bi mat tien, tuyet doi KHONG chia se ma nay voi bat ky ai. zniHFS3HBXG"
+"Code" : "486460"
+"PhoneOriginal" : "0987654321"
+"CountryISO" : "VN"
+"CountryCode" : "84"
+"status_code" : 200
+"success" : true
+"message" : "successful"
+"data" (Cuộc gọi)
+"ID" : "58098"
+"Phone" : "987654321"
+"ServiceID" : 1
+"ServiceName" : "Momo"
+"Status" : 1
+"Price" : 350
+"CreatedTime" : "2020-08-06T17:13:24.88"
+"IsSound" : true
+"SmsContent" : "https://audio.viotp.com/1234500000123456789000006789.wav"
+"Code" : "486460"
+"PhoneOriginal" : "0987654321"
+"CountryISO" : "VN"
+"CountryCode" : "84"
+5. Lịch sử thuê số
+5.1 Ví dụ gửi đi
+
+GET https://api.viotp.com/session/historyv2?token=5abec70115c70ebb685169fe7dd985e7&service=1&status=2&limit=100&fromDate=2020-11-12&toDate=2020-11-12
+Danh sách tham số gửi đi
+
+token : API token của bạn
+Dùng để định danh người gửi
+service : Id của dịch vụ
+Lấy Id trong danh sách trả về ở mục 2
+status : Trạng thái của OTP
+1: Hoàn thành
+0: Đợi tin nhắn
+2: Hết hạn
+limit : Số dữ liệu cần lấy
+fromDate : Ngày tạo OTP từ lúc (yyyy-MM-dd)
+toDate : Ngày tạo OTP đến lúc (yyyy-MM-dd)
+5.2 Kết quả trả về
+
+{"status_code":200,"success":true,"message":"successful","data":[{"ID":58098,"ServiceID":1,"ServiceName":"Momo","Status":1,"Price":600,"Phone":"987654321","SmsContent":"486460 la ma xac thuc OTP dang ky vi MoMo. De tranh bi mat tien, tuyet doi KHONG chia se ma nay voi bat ky ai. zniHFS3HBXG","IsSound":"false","CreatedTime":"2020-08-06T17:13:24.88","Code":"486460"}, {"ID":58060,"ServiceID":1,"ServiceName":"Momo","Status":1,"Price":600,"Phone":"987654321","SmsContent":"https://audio.viotp.com/1234500000123456789000006789.wav","IsSound":"true","CreatedTime":"2020-08-06T17:13:24.88","Code":"486460","PhoneOriginal":"0987654321","CountryISO":"VN","CountryCode":"84"}]}
+Danh sách trả về
+
+status_code : Mã của kết quả
+200 : Thành công
+401 : Lỗi xác thực
+-1 : Có lỗi
+message : Thông tin thêm
+Thông tin báo thành công hoặc là nội dung của lỗi
+data : Lịch sử thuê số - mảng
+ID : ID của OTP
+ServiceID : Id của dịch vụ
+ServiceName : Tên của dịch vụ
+Status : Trạng thái của tin nhắn
+1 : Hoàn thành
+0 : Đợi tin nhắn
+2 : Hết hạn
+Price : Giá thuê dịch vụ
+Phone : Số điện thoại thuê được
+PhoneOriginal : Giá trị dùng để thuê lại số tại mục 3.Yêu cầu dịch vụ
+CountryISO : Mã quốc gia SIM thuê được
+CountryCode : Số mã vùng quốc gia SIM thuê được
+CreatedTime : Thời gian tạo OTP
+IsSound : OTP là audio
+SmsContent : Nội dung tin nhắn (nếu IsSound=true, giá trị sẽ là đường dẫn của file audio otp)
+Code : Mã của OTP
+"status_code" : 200
+"success" : true
+"message" : "successful"
+"data"
+"ID" : 123456
+"ServiceID" : 1
+"ServiceName" : Facebook
+"Status" : 1
+"Price" : 600
+"Phone" : 938558302
+"SmsContent" : 486460 la ma xac thuc OTP dang ky vi MoMo. De tranh bi mat tien, tuyet doi KHONG chia se ma nay voi bat ky ai. zniHFS3HBXG
+"IsSound" : false
+"CreatedTime" : 2021-08-06T17:13:24.88
+"Code" : 486460
+"PhoneOriginal" : 0938558302
+"CountryISO" : VN
+"CountryCode" : 84

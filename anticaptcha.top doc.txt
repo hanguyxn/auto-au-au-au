@@ -1,0 +1,174 @@
+Image to Text - theo màu chữ
+Hướng dẫn sử dụng API Giải Captcha Image to Text theo màu chữ của anticaptcha.top
+
+
+1. Tạo yêu cầu/Request
+POST : https://anticaptcha.top/api/captcha
+
+Các tham số Body:
+
+Tên trường dữ liệu
+
+Kiểu dữ liệu
+
+Bắt buộc
+
+Mô tả
+
+apikey
+
+String
+
+x
+
+Key duy nhất để xác định đối tác API
+
+img
+
+String
+
+x
+
+Link ảnh hoặc ảnh dạng base64
+
+type
+
+Integer
+
+x
+
+Truyền giá trị: 56
+
+listcolor
+
+String
+
+x
+
+Text yêu cầu màu
+Ví dụ: màu xanh lá và màu đỏ
+
+
+Copy
+POST HTTP
+Url: https://anticaptcha.top/api/captcha
+Content-Type: application/json
+
+{
+	"apikey": "YOUR_API_KEY",
+	"img": "image base64 encoded hoặc url ảnh",
+	"type": 56, // id loại captcha muốn giải theo bảng trên
+	"listcolor": "màu xanh lá và màu đỏ"  //thay bằng màu mà captcha yêu cầu
+}
+2. Kết quả trả về/Response
+Kết quả trả về dạng JSON gồm các trường sau
+
+Tên trường dữ liệu
+
+Kiểu dữ liệu
+
+Mô tả
+
+success
+
+boolean
+
+Mã thông báo xác định kết quả của bước gửi captcha qua POST
+
+true: Thành công
+false: Thất bại
+
+message
+
+String
+
+Thông báo tương ứng nếu có
+
+captcha
+
+String
+
+mã captcha đã giải
+
+Thành công
+Thất bại
+
+Copy
+{
+	"success": true,
+	"message": "Thành công",
+	"captcha": "9I" //kết quả giải ra
+}
+3. Code mẫu
+C#
+PHP Curl
+Javascript Jquery AJAX
+
+Copy
+public class CatpchaResult
+{
+    public string log { get; set; }
+    public bool status { get; set; }
+    public string catcha { get; set; }
+}
+public class AnticaptchaTopApi
+{
+    public string apiKey = "";
+    public string Post(string url, object data, string method = "POST")
+    {
+        int num = 0;
+        NameValueCollection values;
+        while (num < 1)
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    values = new NameValueCollection();
+                    if (data != null)
+                    {
+                        data.GetType().GetProperties().ToList().ForEach(delegate (PropertyInfo pi)
+                        {
+                            values.Add(pi.Name, (pi.GetValue(data, null) ?? "").ToString());
+                        });
+                        byte[] bytes = webClient.UploadValues(url, method, values);
+                        return Encoding.UTF8.GetString(bytes);
+                    }
+                    return webClient.DownloadString(url);
+                }
+             }
+            catch
+            {                
+            }
+        }
+        return "";
+    }
+    public CatpchaResult GetCatpcha(string img, int type, string listcolor)
+    {
+        var data = new
+        {
+            apikey = apiKey,
+            type = type,
+            img = img,
+            listcolor = listcolor      
+        };
+        var rs = new CatpchaResult
+        {
+            status = false
+        };
+        try
+        {
+            var result = JsonConvert.DeserializeObject<dynamic>(Post("https://anticaptcha.top/api/captcha", data));
+            if (result.success == true)
+            {
+                rs.status = true;
+                rs.catcha = result.captcha;
+                rs.log = result.message;
+            }
+        }
+        catch
+        {
+        }
+        return rs;
+    }
+}

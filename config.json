@@ -1,0 +1,11 @@
+{
+  "fproxy_keys": "08mjfricer3khgqw6fawfqyns3xpekefojc9ienntjpxw",
+  "anticaptcha_key": "7d5fc55158021f8c043de49b39bac770",
+  "viotp_key": "0f8f8f4e8b1c4797a902950b187ac56e",
+  "viotp_service_id": "971",
+  "bank_data_path": "E:/tool/f1686s.com/bank_sample.txt",
+  "account_count": 1,
+  "thread_count": 1,
+  "delay_min": 5,
+  "delay_max": 10
+}

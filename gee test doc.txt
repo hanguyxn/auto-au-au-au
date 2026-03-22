@@ -1,0 +1,170 @@
+Geetest Image Captcha
+Hướng dẫn sử dụng API Giải Geetest Image Captcha của anticaptcha.top
+
+Hình minh họa
+Hình minh họa
+
+Click vào các ảnh có hình như yêu cầu
+
+
+
+Click vào các ảnh có hình như yêu cầu
+
+1. Tạo yêu cầu/Request
+POST : https://anticaptcha.top/in.php
+
+Các tham số Body:
+
+Tên trường dữ liệu
+
+Kiểu dữ liệu
+
+Bắt buộc
+
+Mô tả
+
+key
+
+String
+
+x
+
+Key duy nhất để xác định đối tác API
+Đăng nhập ⇒ API (key & tài liệu) ⇒ lấy api key
+
+method
+
+String
+
+x
+
+base64
+
+textinstructions
+
+String
+
+x
+
+geetesticonv4
+
+click
+
+String
+
+x
+
+geetest - nhận kết quả dạng tọa độ, ví dụ: coordinates:x=56,y=99;x=283,y=276;x=170,y=276
+geetest2 - nhận kết quả dạng thứ tự ảnh, ví dụ: 1,8,9
+
+body
+
+String
+
+x
+
+base64 ảnh hoặc url ảnh
+ảnh ví dụ: như ở trên
+
+json
+
+Integer
+
+0: server sẽ trả về dạng text (mặc định)
+1: server sẽ trả về dạng JSON
+
+
+Copy
+POST HTTP
+Url: https://anticaptcha.top/in.php
+Content-Type: application/json
+
+{
+	"key": "YOUR_API_KEY",
+	"method": "base64",
+	"textinstructions": "geetesticonv4",
+	"click": "geetest", // id của loại captcha geetest
+	"body": "iVBORw0KGgoAAAANSUhEUgAAAC8AAAA...", //base64 ảnh hoặc url ảnh
+	"json": 1 
+}
+Kết quả trả về/Response
+Thành công
+Thất bại
+
+Copy
+dạng text: OK|[id]
+Ví dụ: OK|24380238
+
+dạng JSON:
+{
+	"status": 1,
+	"request": "24380427", //task id
+}
+2. Lấy kết quả giải captcha/Response
+GET : https://anticaptcha.top/res.php
+
+Các tham số Body:
+
+Tên trường dữ liệu
+
+Kiểu dữ liệu
+
+Bắt buộc
+
+Mô tả
+
+key
+
+String
+
+x
+
+Key duy nhất để xác định đối tác API
+
+id
+
+String
+
+x
+
+Task id trả về ở bước 1
+
+json
+
+Integer
+
+0: server sẽ trả về dạng text (mặc định)
+1: server sẽ trả về dạng JSON
+
+
+Copy
+GET HTTP
+Url: https://anticaptcha.top/res.php?key=[apikey của bạn]&id=[task id]&json=1
+Kết quả trả về/Response
+Đang xử lý
+Thành công
+Thất bại
+
+Copy
+dạng text: CAPCHA_NOT_READY
+
+dạng JSON:
+{
+	"status": 0,
+	"request": "CAPCHA_NOT_READY"
+}
+3. Code mẫu
+C#
+PHP Curl
+Javascript Jquery AJAX
+Python
+NodeJS
+
+Copy
+var client = new HttpClient();
+var request = new HttpRequestMessage(HttpMethod.Post, "https://anticaptcha.top/in.php");
+var content = new StringContent("{\r\n    \"key\": \"[api key]\",\r\n    \"method\": \"base64\",\r\n    \"textinstructions\": \"geetesticonv4\",\r\n    \"click\": \"geetest\",\r\n    \"body\": \"iVBORw0KGgoAAAANSUhEUgAAAC8AAAA...\"\r\n, \"json\": 1}", null, "application/json");
+request.Content = content;
+var response = await client.SendAsync(request);
+response.EnsureSuccessStatusCode();
+Console.WriteLine(await response.Content.ReadAsStringAsync());
